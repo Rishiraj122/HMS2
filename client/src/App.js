@@ -10,6 +10,7 @@ import Notice from './pages/notice'
 import NoticeDisplay from './pages/noticeDisplay'
 import StudentRegistration from './pages/StudentRegistration'
 import FrontPage from './pages/frontPage'
+import StudentLogin from './pages/StudentLogin'
 
 //Route is the conditionally shown component that renders some UI when its path matches the current URL.
 // Browserrouter is a router that uses the HTML5 history API (pushState, replaceState and the popstate event) to keep your UI in sync with the URL.
@@ -27,6 +28,7 @@ const App = () => {
 				<Route path="/noticedisplay" exact component={NoticeDisplay} />
 				<Route path="/studentregistration" exact component={StudentRegistration} />
 				<Route path="/" exact component = {FrontPage} />
+				<Route path="/studentlogin" exact component={StudentLogin} />
 			</BrowserRouter>
 		</div>
 	)

@@ -27,14 +27,10 @@ function App() {
 			localStorage.setItem('token',data.user)
 			window.location.href='/adminlogin'
 		}
-		else if(email==='warden@123.com' && data.user){
-			localStorage.setItem('token',data.user)
-			window.location.href='/wardenlogin'
-		}
 		else if (data.user) {
 			localStorage.setItem('token', data.user)
 			alert('Login successful')
-			window.location.href = '/dashboard'
+			window.location.href = '/staffdashboard'
 		} else {
 			alert('Please check your username and password')
 		}

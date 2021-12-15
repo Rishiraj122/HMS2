@@ -60,6 +60,17 @@ app.post('/api/studentregister', async(req,res) =>{
 	}
 })
 
+app.get('/api/studentlogin', async(req,res) =>{
+	try{
+		const user=await Student.find({})
+		console.warn(user)
+		return res.json({user})
+	}
+	catch(error){
+		console.log({status:'error', error:'failed again'})
+	}
+})
+
 app.get('/api/notice',async (req,res)=>{
 	try{
 		const user = await Notice.find({})
@@ -86,6 +97,32 @@ app.post('/api/notice', async(req,res) =>{
 	}
 })
 
+app.post('/api/studentlogin', async(req,res) =>{
+	const user=await Student.findOne({
+		email: req.body.email
+	})
+	if(!user){
+		return {status: 'error', error: 'Invalid login'}
+	}
+	const isPasswordValid = await bcrypt.compare(
+		req.body.password,
+		user.password
+	)
+
+	if(isPasswordValid){
+		const token=jwt.sign(
+			{
+				name: user.name,
+				email: user.email,
+			},
+			'secret123'
+		)
+
+		return res.json({status: 'ok', user: token})
+	} else{
+		return res.json({status: 'error', user: false})
+	}
+})
 
 app.post('/api/login', async (req, res) => {
 	const user = await User.findOne({

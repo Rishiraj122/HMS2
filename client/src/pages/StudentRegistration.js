@@ -13,7 +13,7 @@ function StudentRegistration() {
 	const [password, setPassword] = useState('')
 
   const login=()=>{
-    window.location.href='/login';
+    window.location.href='/studentlogin';
   }
 
 	async function registerUser(event) {
