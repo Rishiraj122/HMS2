@@ -9,6 +9,10 @@ const AdminLogin = () =>{
         window.location.href='/login'
     }
 
+    const studentDetails=()=>{
+        window.location.href='/studentdetails'
+    }
+
     useEffect(() => {
         const token = localStorage.getItem('token');
         if(!token) {
@@ -20,6 +24,7 @@ const AdminLogin = () =>{
     return (
         <div>
             <h1>This is the admin page</h1>
+            <button onClick={studentDetails}>Student Details</button>
             <button onClick={logout}>Logout</button>
         </div>
     )

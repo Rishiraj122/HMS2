@@ -23,7 +23,7 @@ function App() {
 		})
 
 		const data = await response.json()
-		if (email==='admin@123.com' && data.user){
+		if (email==='admin@gmail.com' && data.user){
 			localStorage.setItem('token',data.user)
 			window.location.href='/adminlogin'
 		}
