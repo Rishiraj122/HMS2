@@ -20,6 +20,7 @@ app.use(cors())
 app.use(express.json())
 
 var bodyParser = require('body-parser');
+const { response } = require('express')
 
 app.use(bodyParser.urlencoded({ extended: false })); // Parses urlencoded bodies
 app.use(bodyParser.json()); // Send JSON responses
@@ -89,6 +90,8 @@ app.post('/api/notice', async(req,res) =>{
 		await Notice.create({
 			name: req.body.name ,
 			notice: req.body.notice ,
+			noticetitle: req.body.noticetitle,
+			nid: Math.random(),
 		})
 		res.json({ status: 'ok' })
 	} catch (err) {
@@ -96,6 +99,60 @@ app.post('/api/notice', async(req,res) =>{
 		res.json({ status: 'error', error: err })
 	}
 })
+
+// app.get('api/notice', function(req, res) {
+//     Notice.findByIdAndRemove(req.params.nid, (err, doc) => {
+//         if (!err) {
+//             res.send("Done");
+//         } else {
+//             console.log('Failed to Delete user Details: ' + err);
+//         }
+//     });
+// })
+
+//---------------------------------------------------
+
+// app.get('/api/noticedelete',async(req,res)=>{
+// 	nid=req.body.nid
+// 	res.send(nid)
+// 	try{
+// 		await Notice.deleteOne({
+// 			"nid": nid
+// 		})
+// 		res.send(nid);
+// 		console.log(nid);
+// 	}
+// 	catch(err){
+// 		res.send("err")
+// 	}
+// })
+
+//--------------------------------------------------------
+
+// app.get('/api/noticedelete/', function(req, res){
+// 	Notice.deleteOne({nid: req.params.nid}, 
+// 	function(err){
+// 		if(err){
+// 			res.json(err);
+// 		}
+// 		else 
+// 			res.send(req.params.nid);
+// 	});
+// });
+
+app.post('/api/noticedelete', async(req,res) =>{
+	try {
+		await Notice.deleteOne({
+			nid: req.body.nid,
+		})
+		res.json({ status: 'ok' })
+	} catch (err) {
+		console.log(err)
+		res.json({ status: 'error', error: err })
+	}
+})
+
+
 
 app.post('/api/studentlogin', async(req,res) =>{
 	const user=await Student.findOne({

@@ -4,6 +4,7 @@ import axios from 'axios'
 function Notice () {
 
     const [name,setName] = useState('')
+    const [noticetitle,setNoticetite] = useState('')
     const [notice,setNotice] = useState('')
 
     const noticePage = () =>{
@@ -29,6 +30,7 @@ function Notice () {
             },
             body: JSON.stringify({
                 name,
+                noticetitle,
                 notice,
                 notices:[]
             }),
@@ -39,17 +41,21 @@ function Notice () {
 		}
     }
 
-    //Updates checking
-
-
-    //Display them
 
     return(
         <div>
-            <h1>HOSTEL WARD</h1>
-            
+            <h1>Publish Notice</h1>
+            <h2>{noticetitle}</h2>
             <h2>{notice}</h2>
+            <h2>{name}</h2>
             <form onSubmit={publishNotice}>
+            <input
+					value={noticetitle}
+                    onChange={(e) => setNoticetite(e.target.value)}
+                    type="text"
+                    placeholder="Title"
+				/>
+				<br />
                 <input
 					value={name}
                     onChange={(e) => setName(e.target.value)}

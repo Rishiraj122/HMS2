@@ -12,8 +12,9 @@ function StudentRegistration() {
     const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 
-  const login=()=>{
-    window.location.href='/studentlogin';
+
+  const back=()=>{
+	  window.location.href='/adminlogin';
   }
 
 	async function registerUser(event) {
@@ -97,7 +98,7 @@ function StudentRegistration() {
 				<br />
 				<input type="submit" value="Register" />
 			</form>
-      <button onClick={login}>Login</button>
+			<button onClick={back}>Back</button>
 		</div>
 	)
 }

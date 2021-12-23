@@ -83,7 +83,6 @@ export default class studentDetails extends React.Component{
 
             </div>
             )}</div>
-            
             }
         </div>
     }

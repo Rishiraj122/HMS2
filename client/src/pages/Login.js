@@ -27,6 +27,10 @@ function App() {
 			localStorage.setItem('token',data.user)
 			window.location.href='/adminlogin'
 		}
+		if(email=='warden@gmail.com' && data.user){
+			localStorage.setItem('token',data.user)
+			window.location.href='/wardenlogin'
+		}
 		else if (data.user) {
 			localStorage.setItem('token', data.user)
 			alert('Login successful')
