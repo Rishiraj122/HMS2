@@ -8,7 +8,8 @@ const notice=new mongoose.Schema({
     roll: {type: Number, required: true},
     registration: {type: Number, required: true},
     email: {type: String, required: true},
-    password: {type: String, required: true}
+    password: {type: String, required: true},
+    block:{type: String, required: false}
 },
     {collection: 'student-details'}
 )

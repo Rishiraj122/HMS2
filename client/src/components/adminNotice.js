@@ -35,7 +35,7 @@ export default class Fetch extends React.Component{
 
     render(){
         return <div>
-            <h1>NOTICE For Staffss</h1>
+            <h1>NOTICE</h1>
             <div>{item.map(i => 
             <div>
                 <h2>{i.noticetitle}</h2>

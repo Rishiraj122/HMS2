@@ -11,10 +11,6 @@ function Notice () {
         window.location.href='/notice';
     }
 
-    const noticeDisplay = () =>{
-        window.location.href='/noticedisplay';
-    }
-
     //Publish Notice
     axios({
         method: 'get',
@@ -72,7 +68,6 @@ function Notice () {
 				<br />
 				<input type="submit" value="publish" onClick={{noticePage}}/>
 			</form>
-            <button onClick={noticeDisplay}>Display Notice</button>
         </div>
     )
 }

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import jwt from 'jsonwebtoken'
 import { useHistory } from 'react-router-dom'
-import Notice from './notice'
+import Notice from '../components/notice'
+import AdminNotice from '../components/adminNotice'
 
 const AdminLogin = () =>{
     const history = useHistory();
@@ -10,9 +11,6 @@ const AdminLogin = () =>{
         window.location.href='/studentregistration'
     }
 
-    const AdminNotice =()=>{
-        window.location.href='/adminnotice'
-    }
 
     const logout=()=>{
         window.localStorage.clear();
@@ -37,9 +35,12 @@ const AdminLogin = () =>{
             <button onClick={addStudent}>Add Student</button>
             <button onClick={studentDetails}>Student Details</button>
             <button onClick={logout}>Logout</button>
-            <button onClick={AdminNotice}>Admin Notice</button>
             <div>
                 <center><Notice></Notice></center>
+                <AdminNotice></AdminNotice> 
+                {/* This admin notice is coming from components/adminNotice, 
+                it is different from normal notice that a student uses in the 
+                sense that the admin notice has the feature to delete notices */}
             </div>
         </div>
     )

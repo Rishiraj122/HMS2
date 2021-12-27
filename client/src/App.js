@@ -6,13 +6,15 @@ import Dashboard from './pages/Dashboard'
 import Logout from './pages/Logout'
 import AdminLogin from './pages/adminlogin'
 import WardenLogin from './pages/wardenlogin'
-import Notice from './pages/notice'
-import NoticeDisplay from './pages/noticeDisplay'
+import Notice from './components/notice'
+import NoticeDisplay from './components/noticeDisplay'
 import StudentRegistration from './pages/studentRegistration'
 import FrontPage from './pages/frontPage'
 import StudentLogin from './pages/studentLogin'
 import StudentDetails from './pages/studentDetails'
-import AdminNotice from './pages/adminNotice'
+import AdminNotice from './components/adminNotice'
+import RoomAllotment from './components/RoomAllotment'
+import AllotedStudents from './components/AllotedStudents'
 
 //Route is the conditionally shown component that renders some UI when its path matches the current URL.
 // Browserrouter is a router that uses the HTML5 history API (pushState, replaceState and the popstate event) to keep your UI in sync with the URL.
@@ -33,7 +35,9 @@ const App = () => {
 				<Route path="/studentlogin" exact component={StudentLogin} />
 				<Route path="/studentdetails" exact component={StudentDetails} />
 				<Route path="/adminNotice" exact component={AdminNotice} />
-
+				<Route path="/roomallotment" exact component={RoomAllotment} />
+				<Route path="/allotedstudents" exact component={AllotedStudents} />
+				
 			</BrowserRouter>
 		</div>
 	)

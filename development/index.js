@@ -5,13 +5,6 @@ const mongoose = require('mongoose')
 const User = require('./models/user.model')
 const Notice=require('./models/notice.model')
 const Student = require('./models/student.model')
-const AdminUser = require('./models/admin.model')
-const Warden = require('./models/warden.model')
-const Mess = require('./models/mess.model')
-const Vendor = require('./models/vendor.model')
-const Room = require('./models/room.model')
-const Staff = require('./models/staff.model')
-const Payment = require('./models/payment.model')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs') //a hashing mechanism
 const { db } = require('./models/notice.model')
@@ -27,6 +20,7 @@ app.use(bodyParser.json()); // Send JSON responses
 
 mongoose.connect('mongodb+srv://hello:hello@cluster0.klx12.mongodb.net/hello?retryWrites=true&w=majority')
 
+//To add staffs
 app.post('/api/register', async (req, res) => {
 	console.log(req.body)
 	try {
@@ -41,7 +35,7 @@ app.post('/api/register', async (req, res) => {
 		res.json({ status: 'error', error: 'Duplicate email' })
 	}
 })
-//name phone address roll registration email password
+//To register students, add students
 app.post('/api/studentregister', async(req,res) =>{
 	console.log(req.body)
 	try{
@@ -61,6 +55,8 @@ app.post('/api/studentregister', async(req,res) =>{
 	}
 })
 
+//To fetch student details
+
 app.get('/api/studentlogin', async(req,res) =>{
 	try{
 		const user=await Student.find({})
@@ -72,18 +68,26 @@ app.get('/api/studentlogin', async(req,res) =>{
 	}
 })
 
-app.get('/api/notice',async (req,res)=>{
+// To allot rooms to the students
+//This will update the existing Student table
+//and set their room.no and block.no
+app.post('/api/allotroom', async(req,res) =>{
 	try{
-		const user = await Notice.find({})
-		console.warn(user)
-		return res.json({user})
-	}
-	catch(error){
-		console.log({status:'error', error:'failed again'})
+		await Student.updateOne({
+			roll: req.body.roll
+		},
+		{
+			$set:{room: req.body.room,
+				block: req.body.block},
+		})
+		res.json({status: 'ok'})
+	} catch(error){
+		console.log(error)
+		res.json({status: 'error', error: err})
 	}
 })
 
-
+//To publish / add notices to the database
 app.post('/api/notice', async(req,res) =>{
 
 	try {
@@ -99,6 +103,112 @@ app.post('/api/notice', async(req,res) =>{
 		res.json({ status: 'error', error: err })
 	}
 })
+
+//To fetch / display notices from the database
+app.get('/api/notice',async (req,res)=>{
+	try{
+		const user = await Notice.find({})
+		console.warn(user)
+		return res.json({user})
+	}
+	catch(error){
+		console.log({status:'error', error:'failed again'})
+	}
+})
+
+//To delete a notice
+app.post('/api/noticedelete', async(req,res) =>{
+	try {
+		await Notice.deleteOne({
+			nid: req.body.nid,
+		})
+		res.json({ status: 'ok' })
+	} catch (err) {
+		console.log(err)
+		res.json({ status: 'error', error: err })
+	}
+})
+
+app.post('/api/studentdelete', async(req,res)=>{
+	try{
+		await Student.deleteOne({
+			roll: req.body.roll,
+		})
+		res.json({status: 'ok'})
+	} catch(err) {
+		console.log(err)
+		res.json({status: 'error', error:err})
+	}
+})
+
+
+//This comes into play when a student tries to log in. It checks if the student exists
+// in the database or not. It verifies the password.
+app.post('/api/studentlogin', async(req,res) =>{
+	const user=await Student.findOne({
+		email: req.body.email
+	})
+	if(!user){
+		return {status: 'error', error: 'Invalid login'}
+	}
+	const isPasswordValid = await bcrypt.compare(
+		req.body.password,
+		user.password
+	)
+
+	if(isPasswordValid){
+		const token=jwt.sign(
+			{
+				name: user.name,
+				email: user.email,
+			},
+			'secret123'
+		)
+
+		return res.json({status: 'ok', user: token})
+	} else{
+		return res.json({status: 'error', user: false})
+	}
+})
+
+//This comes into play when a staff tries to log in. It checks if the staff exists in
+//the database or not. It verifies the password.
+app.post('/api/login', async (req, res) => {
+	const user = await User.findOne({
+		email: req.body.email,
+	})
+
+	if (!user) {
+		return { status: 'error', error: 'Invalid login' }
+	}
+
+	const isPasswordValid = await bcrypt.compare(
+		req.body.password,
+		user.password
+	)
+
+	if (isPasswordValid) {
+		const token = jwt.sign(
+			{
+				name: user.name,
+				email: user.email,
+			},
+			'secret123'
+		)
+
+		return res.json({ status: 'ok', user: token })
+	} else {
+		return res.json({ status: 'error', user: false })
+	}
+})
+
+//Hosted in port: 3000, apis in 1337.
+app.listen(process.env.PORT||1337, () => {
+	console.log('Server started')
+})
+
+
+
 
 // app.get('api/notice', function(req, res) {
 //     Notice.findByIdAndRemove(req.params.nid, (err, doc) => {
@@ -139,78 +249,3 @@ app.post('/api/notice', async(req,res) =>{
 // 			res.send(req.params.nid);
 // 	});
 // });
-
-app.post('/api/noticedelete', async(req,res) =>{
-	try {
-		await Notice.deleteOne({
-			nid: req.body.nid,
-		})
-		res.json({ status: 'ok' })
-	} catch (err) {
-		console.log(err)
-		res.json({ status: 'error', error: err })
-	}
-})
-
-
-
-app.post('/api/studentlogin', async(req,res) =>{
-	const user=await Student.findOne({
-		email: req.body.email
-	})
-	if(!user){
-		return {status: 'error', error: 'Invalid login'}
-	}
-	const isPasswordValid = await bcrypt.compare(
-		req.body.password,
-		user.password
-	)
-
-	if(isPasswordValid){
-		const token=jwt.sign(
-			{
-				name: user.name,
-				email: user.email,
-			},
-			'secret123'
-		)
-
-		return res.json({status: 'ok', user: token})
-	} else{
-		return res.json({status: 'error', user: false})
-	}
-})
-
-app.post('/api/login', async (req, res) => {
-	const user = await User.findOne({
-		email: req.body.email,
-	})
-
-	if (!user) {
-		return { status: 'error', error: 'Invalid login' }
-	}
-
-	const isPasswordValid = await bcrypt.compare(
-		req.body.password,
-		user.password
-	)
-
-	if (isPasswordValid) {
-		const token = jwt.sign(
-			{
-				name: user.name,
-				email: user.email,
-			},
-			'secret123'
-		)
-
-		return res.json({ status: 'ok', user: token })
-	} else {
-		return res.json({ status: 'error', user: false })
-	}
-})
-
-
-app.listen(process.env.PORT||1337, () => {
-	console.log('Server started')
-})

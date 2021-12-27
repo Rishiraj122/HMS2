@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import jwt from 'jsonwebtoken'
 import { useHistory } from 'react-router-dom'
+import RoomAllotment from '../components/RoomAllotment'
+import AllotedStudents from '../components/AllotedStudents'
+import Notice from '../components/notice'
+import AdminNotice from '../components/adminNotice'
 
 const WardenLogin = () =>{
     const history = useHistory();//history instance a react hook
@@ -21,8 +25,12 @@ const WardenLogin = () =>{
 
     return (
         <div>
-            <h1>This is the warden page</h1>
+            <h1>Warden Dashboard</h1>
             <button onClick={logout}>Logout</button>
+            <RoomAllotment></RoomAllotment>
+            <AllotedStudents></AllotedStudents>
+            <Notice></Notice>
+            <AdminNotice></AdminNotice>
         </div>
     )
 }

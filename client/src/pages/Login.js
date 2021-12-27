@@ -23,11 +23,11 @@ function App() {
 		})
 
 		const data = await response.json()
-		if (email==='admin@gmail.com' && data.user){
+		if (email=='admin@gmail.com' && data.user){
 			localStorage.setItem('token',data.user)
 			window.location.href='/adminlogin'
 		}
-		if(email=='warden@gmail.com' && data.user){
+		else if(email=='warden@gmail.com' && data.user){
 			localStorage.setItem('token',data.user)
 			window.location.href='/wardenlogin'
 		}
@@ -35,7 +35,8 @@ function App() {
 			localStorage.setItem('token', data.user)
 			alert('Login successful')
 			window.location.href = '/staffdashboard'
-		} else {
+		} 
+		else {
 			alert('Please check your username and password')
 		}
 	}

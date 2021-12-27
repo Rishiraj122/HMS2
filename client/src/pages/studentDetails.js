@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {useHistory} from "react-router-dom";
+import axios from 'axios';
   
 
 const item=[];
@@ -50,6 +51,12 @@ export default class studentDetails extends React.Component{
         }
     }
 
+    async delete(value){
+        const roll={roll: value}
+        const response = await axios.post('http://localhost:1337/api/studentdelete',roll);
+        window.location.reload(false);
+    }
+
     refreshPage(){
         window.location.reload();
     } 
@@ -80,7 +87,9 @@ export default class studentDetails extends React.Component{
                 <p>Address: {student.address}</p>
                 <p>Phone Number: {student.phone}</p>
                 <p>E-mail ID: {student.email}</p>
-
+                <p>Room: {student.room}</p>
+                <p>Block: {student.block}</p>
+                <button onDoubleClick={()=>this.delete(student.roll)}>Delete</button>
             </div>
             )}</div>
             }
